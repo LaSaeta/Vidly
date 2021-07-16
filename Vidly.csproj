@@ -162,6 +162,14 @@
     <Compile Include="Migrations\202107160409582_AddMembershipTypeToCustomer.designer.cs">
       <DependentUpon>202107160409582_AddMembershipTypeToCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107160419263_AddNameToMembershipTypes.cs" />
+    <Compile Include="Migrations\202107160419263_AddNameToMembershipTypes.designer.cs">
+      <DependentUpon>202107160419263_AddNameToMembershipTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202107160420116_PopulateNameinMembershipTypes.cs" />
+    <Compile Include="Migrations\202107160420116_PopulateNameinMembershipTypes.designer.cs">
+      <DependentUpon>202107160420116_PopulateNameinMembershipTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\MembershipType.cs" />
@@ -250,6 +258,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107160409582_AddMembershipTypeToCustomer.resx">
       <DependentUpon>202107160409582_AddMembershipTypeToCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107160419263_AddNameToMembershipTypes.resx">
+      <DependentUpon>202107160419263_AddNameToMembershipTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107160420116_PopulateNameinMembershipTypes.resx">
+      <DependentUpon>202107160420116_PopulateNameinMembershipTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
