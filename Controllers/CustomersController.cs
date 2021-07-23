@@ -9,18 +9,18 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-        private DataContext _dataContext { get; set; }
+        private readonly DataContext _context;
 
         public CustomersController()
         {
-            _dataContext = new DataContext();
+            _context = new DataContext();
         }
 
         // GET: Customers
 
         public ActionResult Index()
         {
-            var customers = _dataContext.Customers
+            var customers = _context.Customers
                             .Include(c => c.MembershipType)
                             .ToList();
 
@@ -32,7 +32,7 @@ namespace Vidly.Controllers
 
         public ActionResult Details(int id)
         {
-            var customer = _dataContext.Customers
+            var customer = _context.Customers
                             .Include(c => c.MembershipType)
                             .SingleOrDefault(c => c.Id == id);
 
@@ -44,7 +44,7 @@ namespace Vidly.Controllers
 
         public ActionResult Edit(int id)
         {
-            var customer = _dataContext.Customers.SingleOrDefault(c => c.Id == id);
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
                 return HttpNotFound();
@@ -52,7 +52,7 @@ namespace Vidly.Controllers
             var viewModel = new CustomerFormViewModel()
             {
                 Customer = customer,
-                MembershipTypes = _dataContext.MembershipTypes.ToList()
+                MembershipTypes = _context.MembershipTypes.ToList()
             };
 
             return View("CustomerForm", viewModel);
@@ -60,9 +60,10 @@ namespace Vidly.Controllers
 
         public ActionResult New()
         {
-            var membershipTypes = _dataContext.MembershipTypes.ToList();
+            var membershipTypes = _context.MembershipTypes.ToList();
             var viewModel = new CustomerFormViewModel
             {
+                Customer = new Customer(),
                 MembershipTypes = membershipTypes
             };
 
@@ -70,13 +71,25 @@ namespace Vidly.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new CustomerFormViewModel
+                {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipTypes.ToList()
+                };
+
+                return View("CustomerForm", viewModel);
+            }
+
             if (customer.Id == 0)
-                _dataContext.Customers.Add(customer);
+                _context.Customers.Add(customer);
             else
             {
-                var customerData = _dataContext.Customers.Single(c => c.Id == customer.Id);
+                var customerData = _context.Customers.Single(c => c.Id == customer.Id);
 
                 customerData.Name = customer.Name;
                 customerData.BirthDate = customer.BirthDate;
@@ -84,7 +97,7 @@ namespace Vidly.Controllers
                 customerData.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
             }
 
-            _dataContext.SaveChanges();
+            _context.SaveChanges();
 
             return RedirectToAction("Index", "Customers");
         }
