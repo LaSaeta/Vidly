@@ -20,13 +20,7 @@ namespace Vidly.Controllers
 
         public ActionResult Index()
         {
-            var customers = _context.Customers
-                            .Include(c => c.MembershipType)
-                            .ToList();
-
-            var viewModel = new CustomerViewModel { Customers = customers };
-
-            return View(viewModel);
+            return View();
         }
 
 
